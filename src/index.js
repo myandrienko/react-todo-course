@@ -22,15 +22,15 @@ function TodoItem({ name, done, urgent, onDoneChange }) {
 }
 
 function TodoList({ list }) {
-  try {
-    console.log('TodoList called');
-    return list.map((item) => <TodoItem {...item} onDoneChange={(done) => {
-      item.done = done;
-      render();
-    }}/>);
-  } finally {
-    console.log('TodoList returned');
-  }
+  return list.map((item) => <TodoItem
+    {...item}
+    onDoneChange={(done) => handleDoneChange(item, done)}
+  />);
+}
+
+function handleDoneChange(item, done) {
+  item.done = done;
+  render();
 }
 
 function render() {
