@@ -6,18 +6,41 @@ const todos = [
   { name: 'Second task', done: false, urgent: true }
 ];
 
-function TodoItem({ name, done, urgent }) {
-  return <label><input type="checkbox" checked={done}/>{name}</label>
+function TodoItem({ name, done, urgent, onDoneChange }) {
+  try {
+    console.log('TodoItem called');
+    return <label><input
+      type="checkbox"
+      checked={done}
+      onChange={(event) => {
+        onDoneChange(event.target.checked);
+      }}
+    />{name}</label>
+  } finally {
+    console.log('TodoItem returned');
+  }
 }
 
 function TodoList({ list }) {
-  const elements = list.map(item => <TodoItem {...item} />);
-  return <TodoItem name={list[0].name} done={list[0].done}/>
+  try {
+    console.log('TodoList called');
+    return list.map((item) => <TodoItem {...item} onDoneChange={(done) => {
+      item.done = done;
+      render();
+    }}/>);
+  } finally {
+    console.log('TodoList returned');
+  }
 }
 
-const element = <TodoList list={todos}/>;
-console.log(element);
+function render() {
+  console.log('Render called');
+  console.log(<TodoList list={todos}/>);
+  ReactDOM.render(<TodoList list={todos}/>,
+    document.getElementById('root')
+  );
+  console.log('Render finished');
+}
 
-ReactDOM.render(element,
-  document.getElementById('root')
-);
+render();
+
