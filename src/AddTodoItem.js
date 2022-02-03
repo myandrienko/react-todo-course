@@ -1,7 +1,7 @@
 import React from 'react';
-import { handleTaskAdd } from "./todos";
+import { createTask } from "./todos";
 
-export function AddTodoItem() {
+export function AddTodoItem({ onTaskAdd }) {
   console.log('Rendered AddTodoItem');
   const [taskName, setTaskName] = React.useState('New task');
 
@@ -10,7 +10,7 @@ export function AddTodoItem() {
       setTaskName(event.target.value);
     }}/>
     <button onClick={() => {
-      handleTaskAdd(taskName);
+      onTaskAdd(createTask(taskName))
       setTaskName('');
     }}>Add task
     </button>

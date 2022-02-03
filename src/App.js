@@ -11,7 +11,7 @@ export function App() {
 
   return <>
     <TodoList value={filteredList} onChange={(list) => setList(list)}/>
-    <AddTodoItem/>
+    <AddTodoItem onTaskAdd={(newTask) => setList([newTask, ...list])}/>
     <TaskFilter
       shouldShowOnlyUrgent={shouldShowOnlyUrgent}
       onShowOnlyUrgentChange={(value) => setShowOnlyUrgent(value)}/>

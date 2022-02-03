@@ -1,4 +1,3 @@
-import { render } from "./index";
 import { nanoid } from "nanoid";
 
 export const todos = [
@@ -6,15 +5,11 @@ export const todos = [
   { id: nanoid(), name: 'Second task', done: false, urgent: true }
 ];
 
-export function handleDoneChange(item, done) {
-  item.done = done;
-}
-
-export function handleTaskAdd(name) {
-  todos.unshift({
+export function createTask(name) {
+  return {
     id: nanoid(),
     name: name ?? `Added task ${new Date().toLocaleTimeString()}`,
     done: false,
     urgent: false
-  });
+  };
 }
