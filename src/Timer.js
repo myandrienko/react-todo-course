@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const END_OF_WORKDAY_HOURS = 21;
 const END_OF_WORKDAY_MINS = 30;
@@ -21,7 +21,23 @@ function getRemainingWorkdayTime() {
 }
 
 export function Timer() {
+  const [remainingTime, setRemainingTime] = useState(getRemainingWorkdayTime());
+  const { hours, mins, secs } = remainingTime;
+
+  useEffect(() => {
+    console.log('Interval set');
+    const handle = setInterval(() => {
+      setRemainingTime(getRemainingWorkdayTime());
+    }, 500);
+
+    return () => {
+      // clean up
+      console.log('Interval cleared');
+      clearInterval(handle);
+    }
+  }, []);
+
   return (
-    <div></div>
+    <div>{hours}:{mins}:{secs}</div>
   );
 }
