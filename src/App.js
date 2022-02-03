@@ -1,15 +1,16 @@
 import { TodoList } from "./TodoList";
-import { todos } from "./todos";
+import { todos as initialList } from "./todos";
 import { AddTodoItem } from "./AddTodoItem";
 import { TaskFilter } from "./TaskFilter";
 import React from "react";
 
 export function App() {
+  const [list, setList] = React.useState(initialList);
   const [shouldShowOnlyUrgent, setShowOnlyUrgent] = React.useState(false);
-  const filteredList = shouldShowOnlyUrgent ? todos.filter(item => item.urgent) : todos;
+  const filteredList = shouldShowOnlyUrgent ? list.filter(item => item.urgent) : list;
 
   return <>
-    <TodoList list={filteredList}/>
+    <TodoList value={filteredList} onChange={(list) => setList(list)}/>
     <AddTodoItem/>
     <TaskFilter
       shouldShowOnlyUrgent={shouldShowOnlyUrgent}

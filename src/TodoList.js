@@ -1,13 +1,13 @@
 import React from 'react';
 import { TodoItem } from "./TodoItem";
-import { handleDoneChange } from "./todos";
 
-export function TodoList({ list }) {
-  return list.map((item) => <TodoItem
+export function TodoList({ value, onChange }) {
+  return value.map((item, currentItemIndex) => <TodoItem
     key={item.id}
-    name={item.name}
-    done={item.done}
-    urgent={item.urgent}
-    onDoneChange={(done) => handleDoneChange(item, done)}
+    value={item}
+    onChange={(newItem) => {
+      const newList = value.map((item, index) => index === currentItemIndex ? newItem : item);
+      onChange(newList);
+    }}
   />);
 }

@@ -8,7 +8,6 @@ export const todos = [
 
 export function handleDoneChange(item, done) {
   item.done = done;
-  render();
 }
 
 export function handleTaskAdd(name) {
@@ -18,5 +17,4 @@ export function handleTaskAdd(name) {
     done: false,
     urgent: false
   });
-  render();
 }

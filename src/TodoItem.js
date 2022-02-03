@@ -1,12 +1,12 @@
 import React from 'react';
 
-export function TodoItem({ name, done, urgent, onDoneChange }) {
+export function TodoItem({ value, onChange }) {
   console.log('Rendered TodoItem');
   return <p><label><input
     type="checkbox"
-    checked={done}
+    checked={value.done}
     onChange={(event) => {
-      onDoneChange(event.target.checked);
+      onChange({ ...value, done: event.target.checked });
     }}
-  />{name}</label></p>
+  />{value.name}</label></p>
 }
