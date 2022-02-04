@@ -17,7 +17,7 @@ export function App() {
   }, []);
 
   async function handleTaskAdd(newTask) {
-    setList([newTask, ...list]);
+    setList([...list, newTask]);
     await addTask(newTask);
   }
 
