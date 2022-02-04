@@ -11,7 +11,7 @@ export function App() {
 
   return <>
     <Timer/>
-    {isLoading
+    {!isLoading
       ? <>
         <TodoList
           value={list}
