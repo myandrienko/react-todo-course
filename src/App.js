@@ -1,25 +1,39 @@
 import { TodoList } from "./TodoList";
-import { todos as initialList } from "./todos";
 import { AddTodoItem } from "./AddTodoItem";
 import { TaskFilter } from "./TaskFilter";
-import React from "react";
+import React, { useEffect } from "react";
 import { Timer } from "./Timer";
+import { addTask, getTasks } from "./api";
 
 export function App() {
-  const [list, setList] = React.useState(initialList);
+  const [list, setList] = React.useState(null);
   const [shouldShowOnlyUrgent, setShowOnlyUrgent] = React.useState(false);
-  const [showTimer, setShowTimer] = React.useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const tasks = await getTasks();
+      setList(tasks);
+    })();
+  }, []);
+
+  async function handleTaskAdd(newTask) {
+    setList([newTask, ...list]);
+    await addTask(newTask);
+  }
 
   return <>
-    {showTimer && <Timer/>}
-    <button onClick={() => setShowTimer(false)}>Hide timer</button>
-    <TodoList
-      value={list}
-      shouldShowOnlyUrgent={shouldShowOnlyUrgent}
-      onChange={(list) => setList(list)}/>
-    <AddTodoItem onTaskAdd={(newTask) => setList([newTask, ...list])}/>
-    <TaskFilter
-      shouldShowOnlyUrgent={shouldShowOnlyUrgent}
-      onShowOnlyUrgentChange={(value) => setShowOnlyUrgent(value)}/>
+    <Timer/>
+    {list
+      ? <>
+        <TodoList
+          value={list}
+          shouldShowOnlyUrgent={shouldShowOnlyUrgent}
+          onChange={(list) => setList(list)}/>
+        <AddTodoItem onTaskAdd={handleTaskAdd}/>
+        <TaskFilter
+          shouldShowOnlyUrgent={shouldShowOnlyUrgent}
+          onShowOnlyUrgentChange={(value) => setShowOnlyUrgent(value)}/>
+      </>
+      : <h1>Loading tasks...</h1>}
   </>;
 }

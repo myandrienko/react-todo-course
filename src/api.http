@@ -1,2 +1,12 @@
 GET https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/15/tasks
 Accept: application/json
+
+###
+POST https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/15/tasks
+Content-Type: application/json
+
+{
+  "name": "This task was added via API",
+  "done": false,
+  "urgent": false
+}
