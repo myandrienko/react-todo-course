@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './Timer.css';
 
 const END_OF_WORKDAY_HOURS = 21;
 const END_OF_WORKDAY_MINS = 30;
@@ -21,23 +22,30 @@ function getRemainingWorkdayTime() {
 }
 
 export function Timer() {
+  const [isRunning, setRunning] = useState(true);
   const [remainingTime, setRemainingTime] = useState(getRemainingWorkdayTime());
   const { hours, mins, secs } = remainingTime;
 
   useEffect(() => {
-    console.log('Interval set');
-    const handle = setInterval(() => {
-      setRemainingTime(getRemainingWorkdayTime());
-    }, 500);
+    if (isRunning) {
+      console.log('Interval set');
+      const handle = setInterval(() => {
+        setRemainingTime(getRemainingWorkdayTime());
+      }, 500);
 
-    return () => {
-      // clean up
-      console.log('Interval cleared');
-      clearInterval(handle);
+      return () => {
+        // clean up
+        console.log('Interval cleared');
+        clearInterval(handle);
+      }
     }
-  }, []);
+  }, [isRunning]);
 
   return (
-    <div>{hours}:{mins}:{secs}</div>
+    <div className="timer">{hours}:{mins}:{secs}
+      <button onClick={() => setRunning(!isRunning)}>
+        {isRunning ? 'Pause' : 'Play'}
+      </button>
+    </div>
   );
 }
