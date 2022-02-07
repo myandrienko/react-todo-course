@@ -5,15 +5,20 @@ export function useTodoList() {
   const [list, setList] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      const tasks = await api.getTasks();
-      setList(tasks);
-    })();
+    loadTasks().catch(() => {
+      console.error('Failed to load tasks');
+    });
   }, []);
+
+  async function loadTasks() {
+    const tasks = await api.getTasks();
+    setList(tasks);
+  }
 
   async function addTask(newTask) {
     setList([...list, newTask]);
     await api.addTask(newTask);
+    await loadTasks();
   }
 
   async function updateTask(task) {

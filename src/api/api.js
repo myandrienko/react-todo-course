@@ -1,3 +1,5 @@
+import { hasTemporaryId } from "../models/todos";
+
 const BASE_URL = 'https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/15';
 
 export async function getTasks() {
@@ -24,7 +26,7 @@ export async function addTask(task) {
 }
 
 export async function updateTask(task) {
-  if (task.id.startsWith('$')) {
+  if (hasTemporaryId(task)) {
     throw new Error('Cannot update task with client-generated id');
   }
 
