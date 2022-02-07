@@ -2,6 +2,10 @@
 GET https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/15/tasks
 Accept: application/json
 
+### Get single task
+GET https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/15/tasks/31
+Accept: application/json
+
 ### Add new task
 POST https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/15/tasks
 Content-Type: application/json

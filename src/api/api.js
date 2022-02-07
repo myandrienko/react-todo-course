@@ -14,6 +14,11 @@ export async function getTasks() {
   return tasks;
 }
 
+export async function getTask(id) {
+  const response = await fetch(`${BASE_URL}/tasks/${id}`);
+  return await response.json();
+}
+
 export async function addTask(task) {
   const { id, ...apiTask } = task;
 
