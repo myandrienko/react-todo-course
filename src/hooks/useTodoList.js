@@ -11,14 +11,15 @@ export function useTodoList() {
     })();
   }, []);
 
-  function updateList(newList) {
-    setList(newList);
-  }
-
   async function addTask(newTask) {
     setList([...list, newTask]);
     await api.addTask(newTask);
   }
 
-  return { list, isLoading: list === null, addTask, updateList };
+  async function updateTask(task) {
+    setList(list.map(item => item.id === task.id ? task : item));
+    await api.updateTask(task);
+  }
+
+  return { list, isLoading: list === null, addTask, updateTask };
 }

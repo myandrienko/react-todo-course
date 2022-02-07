@@ -6,7 +6,7 @@ import { Timer } from "./Timer";
 import { useTodoList } from "../hooks/useTodoList";
 
 export function App() {
-  const { list, isLoading, addTask, updateList } = useTodoList();
+  const { list, isLoading, addTask, updateTask } = useTodoList();
   const [shouldShowOnlyUrgent, setShowOnlyUrgent] = useState(false);
 
   return <>
@@ -16,7 +16,7 @@ export function App() {
         <TodoList
           value={list}
           shouldShowOnlyUrgent={shouldShowOnlyUrgent}
-          onChange={(list) => updateList(list)}/>
+          onTaskChange={(task) => updateTask(task)}/>
         <AddTodoItem onTaskAdd={(newTask) => addTask(newTask)}/>
         <TaskFilter
           shouldShowOnlyUrgent={shouldShowOnlyUrgent}

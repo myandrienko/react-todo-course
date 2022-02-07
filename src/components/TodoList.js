@@ -1,7 +1,7 @@
 import React from 'react';
 import { TodoItem } from "./TodoItem";
 
-export function TodoList({ shouldShowOnlyUrgent, value, onChange }) {
+export function TodoList({ shouldShowOnlyUrgent, value, onTaskChange }) {
   const filteredList = shouldShowOnlyUrgent
     ? value.filter(item => item.urgent)
     : value;
@@ -9,9 +9,6 @@ export function TodoList({ shouldShowOnlyUrgent, value, onChange }) {
   return filteredList.map((currentItem) => <TodoItem
     key={currentItem.id}
     value={currentItem}
-    onChange={(newItem) => {
-      const newList = value.map((item) => item.id === currentItem.id ? newItem : item);
-      onChange(newList);
-    }}
+    onChange={(newItem) => onTaskChange(newItem)}
   />);
 }

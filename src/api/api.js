@@ -22,3 +22,17 @@ export async function addTask(task) {
     }
   });
 }
+
+export async function updateTask(task) {
+  if (task.id.startsWith('$')) {
+    throw new Error('Cannot update task with client-generated id');
+  }
+
+  await fetch(`${BASE_URL}/tasks/${task.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(task),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+}
