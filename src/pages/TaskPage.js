@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { useTodoItem } from "../hooks/useTodoItem";
+import { Checkbox, Textbox } from "../components/inputs";
 import { FormRow } from "../components/FormRow";
+
+const fields = [
+  { label: 'Task name', key: 'name', Component: Textbox },
+  { label: 'Done', key: 'done', Component: Checkbox },
+  { label: 'Urgent', key: 'urgent', Component: Checkbox },
+];
 
 export const TaskPage = () => {
   const { id } = useParams();
@@ -12,17 +19,14 @@ export const TaskPage = () => {
     setTask(initialTask);
   }
 
-  function handleChange(event) {
-    const { name, type } = event.target;
-    const valueProp = type === 'checkbox' ? 'checked' : 'value';
-    setTask({ ...task, [name]: event.target[valueProp] });
+  function handleChange({ name, value }) {
+    setTask({ ...task, [name]: value });
   }
 
-  function getFieldProps(name, type) {
+  function getFieldProps(name) {
     return {
       name,
-      [type === 'checkbox' ? 'checked' : 'value']: task[name],
-      type,
+      value: task[name],
       onChange: handleChange,
     }
   }
@@ -31,19 +35,11 @@ export const TaskPage = () => {
     <h1>Task details</h1>
     <Link to='/list'>Back to list</Link>
     {task
-      ? (
-        <>
-          <FormRow label='Task name'>
-            <input {...getFieldProps('name')}/>
-          </FormRow>
-          <FormRow label='Done'>
-            <input {...getFieldProps('done', 'checkbox')}/>
-          </FormRow>
-          <FormRow label='Urgent'>
-            <input {...getFieldProps('urgent', 'checkbox')}/>
-          </FormRow>
-        </>
-      )
+      ? fields.map(({ label, key, Component }) => (
+        <FormRow key={key} label={label}>
+          <Component {...getFieldProps(key)} />
+        </FormRow>
+      ))
       : <p>Loading task...</p>}
   </>
 };
