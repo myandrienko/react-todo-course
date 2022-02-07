@@ -1,6 +1,7 @@
 import { hasTemporaryId } from "../models/todos";
 
-const BASE_URL = 'https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/15';
+const userId = process.env.REACT_APP_USER_ID;
+const BASE_URL = `https://61fbda4e3f1e34001792c65e.mockapi.io/api/u/${userId}`;
 
 export async function getTasks() {
   const response = await fetch(`${BASE_URL}/tasks`);
