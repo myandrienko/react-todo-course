@@ -1,11 +1,11 @@
-import { TodoList } from "./TodoList";
-import { AddTodoItem } from "./AddTodoItem";
-import { TaskFilter } from "./TaskFilter";
+import { TodoList } from "../components/TodoList";
+import { AddTodoItem } from "../components/AddTodoItem";
+import { TaskFilter } from "../components/TaskFilter";
 import React, { useState } from "react";
-import { Timer } from "./Timer";
+import { Timer } from "../components/Timer";
 import { useTodoList } from "../hooks/useTodoList";
 
-export function App() {
+export function ListPage() {
   const { list, isLoading, addTask, updateTask } = useTodoList();
   const [shouldShowOnlyUrgent, setShowOnlyUrgent] = useState(false);
 
