@@ -33,3 +33,18 @@ function connect(Component) {
 
 export const ConnectedCheckbox = connect(Checkbox);
 export const ConnectedTextbox = connect(Textbox);
+
+export function Field({ name, component: Component, children: render, ...props }) {
+  const context = useContext(TaskContext);
+  const value = context.task[name];
+
+  if (typeof render === 'function') {
+    return render({ value, onChange: context.handleChange, name });
+  }
+
+  if (Component) {
+    return <Component {...props} name={name} value={value} onChange={context.handleChange}/>;
+  }
+
+  throw new Error('Neither component nor render function provided');
+}
