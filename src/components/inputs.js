@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { TaskContext } from "../pages/TaskPage";
 
 export function Checkbox({ value, onChange, ...props }) {
@@ -24,9 +24,14 @@ export function Textbox({ onChange, ...props }) {
 }
 
 function useFormProps(name) {
-  const context = useContext(TaskContext);
-  const value = context.task[name];
-  return { value, onChange: context.handleChange, name };
+  const { task, dispatch } = useContext(TaskContext);
+  const value = task[name];
+
+  const handleOnChange = useCallback((payload) => {
+    dispatch({ type: 'CHANGE', payload });
+  }, [dispatch]);
+
+  return { value, onChange: handleOnChange, name };
 }
 
 function connect(Component) {

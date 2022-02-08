@@ -1,7 +1,7 @@
 import { TodoList } from "../components/TodoList";
 import { AddTodoItem } from "../components/AddTodoItem";
 import { TaskFilter } from "../components/TaskFilter";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Timer } from "../components/Timer";
 import { useTodoList } from "../hooks/useTodoList";
 
@@ -9,7 +9,7 @@ export function ListPage() {
   const { list, isLoading, addTask, updateTask } = useTodoList();
   const [shouldShowOnlyUrgent, setShowOnlyUrgent] = useState(false);
   const handleTaskChange = useCallback((task) => updateTask(task), [updateTask]);
-  const [fake, setFake] = useState({});
+  const [, setFake] = useState({});
 
   return <>
     <Timer/>
