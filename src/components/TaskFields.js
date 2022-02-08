@@ -1,4 +1,4 @@
-import { Checkbox, Textbox } from "./inputs";
+import { Checkbox, Textbox } from "./connectedInputs";
 import { FormRow } from "./FormRow";
 import React from "react";
 
@@ -11,7 +11,7 @@ const fields = [
 export function TaskFields() {
   return fields.map(({ label, key, Component }) => (
     <FormRow key={key} label={label}>
-      <Component {...getFieldProps(key)} />
+      <Component name={key}/>
     </FormRow>
   ));
 }

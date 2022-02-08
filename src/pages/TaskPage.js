@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { useTodoItem } from "../hooks/useTodoItem";
-import { Checkbox, Textbox } from "../components/inputs";
-import { FormRow } from "../components/FormRow";
+import { TaskFields } from "../components/TaskFields";
 
-const fields = [
-  { label: 'Task name', key: 'name', Component: Textbox },
-  { label: 'Done', key: 'done', Component: Checkbox },
-  { label: 'Urgent', key: 'urgent', Component: Checkbox },
-];
+export const TaskContext = React.createContext(null);
 
 export const TaskPage = () => {
   const { id } = useParams();
@@ -23,23 +18,13 @@ export const TaskPage = () => {
     setTask({ ...task, [name]: value });
   }
 
-  function getFieldProps(name) {
-    return {
-      name,
-      value: task[name],
-      onChange: handleChange,
-    }
-  }
-
-  return <>
-    <h1>Task details</h1>
-    <Link to='/list'>Back to list</Link>
-    {task
-      ? fields.map(({ label, key, Component }) => (
-        <FormRow key={key} label={label}>
-          <Component {...getFieldProps(key)} />
-        </FormRow>
-      ))
-      : <p>Loading task...</p>}
-  </>
+  return (
+    <TaskContext.Provider value={{ task, handleChange }}>
+      <h1>Task details</h1>
+      <Link to='/list'>Back to list</Link>
+      {task
+        ? <TaskFields/>
+        : <p>Loading task...</p>}
+    </TaskContext.Provider>
+  );
 };
