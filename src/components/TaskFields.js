@@ -1,11 +1,11 @@
-import { Checkbox, Textbox } from "./connectedInputs";
+import { ConnectedCheckbox, ConnectedTextbox } from "./inputs";
 import { FormRow } from "./FormRow";
 import React from "react";
 
 const fields = [
-  { label: 'Task name', key: 'name', Component: Textbox },
-  { label: 'Done', key: 'done', Component: Checkbox },
-  { label: 'Urgent', key: 'urgent', Component: Checkbox },
+  { label: 'Task name', key: 'name', Component: ConnectedTextbox },
+  { label: 'Done', key: 'done', Component: ConnectedCheckbox },
+  { label: 'Urgent', key: 'urgent', Component: ConnectedCheckbox },
 ];
 
 export function TaskFields() {

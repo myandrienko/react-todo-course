@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { TaskContext } from "../pages/TaskPage";
 
 export function Checkbox({ value, onChange, ...props }) {
   function handleChange(event) {
@@ -21,3 +22,14 @@ export function Textbox({ onChange, ...props }) {
 
   return <input {...props} onChange={handleChange}/>;
 }
+
+function connect(Component) {
+  return function ConnectedComponent({ name, ...props }) {
+    const context = useContext(TaskContext);
+    const value = context.task[name];
+    return <Component {...props} name={name} value={value} onChange={context.handleChange}/>;
+  }
+}
+
+export const ConnectedCheckbox = connect(Checkbox);
+export const ConnectedTextbox = connect(Textbox);
