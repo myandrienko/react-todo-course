@@ -23,11 +23,16 @@ export function Textbox({ onChange, ...props }) {
   return <input {...props} onChange={handleChange}/>;
 }
 
+function useFormProps(name) {
+  const context = useContext(TaskContext);
+  const value = context.task[name];
+  return { value, onChange: context.handleChange, name };
+}
+
 function connect(Component) {
   return function ConnectedComponent({ name, ...props }) {
-    const context = useContext(TaskContext);
-    const value = context.task[name];
-    return <Component {...props} name={name} value={value} onChange={context.handleChange}/>;
+    const formProps = useFormProps(name);
+    return <Component {...props} {...formProps}/>;
   }
 }
 
@@ -35,15 +40,14 @@ export const ConnectedCheckbox = connect(Checkbox);
 export const ConnectedTextbox = connect(Textbox);
 
 export function Field({ name, component: Component, children: render, ...props }) {
-  const context = useContext(TaskContext);
-  const value = context.task[name];
+  const formProps = useFormProps(name);
 
   if (typeof render === 'function') {
-    return render({ value, onChange: context.handleChange, name });
+    return render(formProps);
   }
 
   if (Component) {
-    return <Component {...props} name={name} value={value} onChange={context.handleChange}/>;
+    return <Component {...props} {...formProps}/>;
   }
 
   throw new Error('Neither component nor render function provided');

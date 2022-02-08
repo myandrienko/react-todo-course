@@ -1,7 +1,7 @@
 import React from 'react';
 import { hasTemporaryId } from "../models/todos";
 
-export function TodoItem({ value, onChange }) {
+export const TodoItem = React.memo(function TodoItem({ value, onChange }) {
   console.log('Rendered TodoItem');
   return <p><label><input
     type="checkbox"
@@ -11,4 +11,4 @@ export function TodoItem({ value, onChange }) {
       onChange({ ...value, done: event.target.checked });
     }}
   />{value.name}</label></p>
-}
+});

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import * as api from "../api/api";
 
 export function useTodoList() {
@@ -21,10 +21,10 @@ export function useTodoList() {
     await loadTasks();
   }
 
-  async function updateTask(task) {
+  const updateTask = useCallback(async (task) => {
     setList(list.map(item => item.id === task.id ? task : item));
     await api.updateTask(task);
-  }
+  }, []);
 
   return { list, isLoading: list === null, addTask, updateTask };
 }
