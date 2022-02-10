@@ -5,13 +5,15 @@ import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { TaskPage } from "./pages/TaskPage";
 
 ReactDOM.render((
-    <HashRouter>
-      <Routes>
-        <Route path='/' element={<ListPage/>}/>
-        <Route path='/task/:id' element={<TaskPage/>}/>
-        <Route path='*' element={<Navigate to='/'/>}/>
-      </Routes>
-    </HashRouter>
+    <React.StrictMode>
+      <HashRouter>
+        <Routes>
+          <Route path='/' element={<ListPage/>}/>
+          <Route path='/task/:id' element={<TaskPage/>}/>
+          <Route path='*' element={<Navigate to='/'/>}/>
+        </Routes>
+      </HashRouter>
+    </React.StrictMode>
   ),
   document.getElementById('root')
 );

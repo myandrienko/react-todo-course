@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <div id="second-container"></div>
+
+    <template id="todo-item-template">
+      <label
+        ><input type="checkbox" class="todo-item-checkbox" /><span
+          class="todo-item-name"
+        ></span
+      ></label>
+    </template>
+
+    <script>
+      const list = [
+        { name: 'Task name', done: true, urgent: false },
+        { name: 'Another task name', done: false, urgent: true },
+      ];
+
+      function createTodoItem({ name, done, urgent }) {
+        const template = document.querySelector('#todo-item-template');
+        const todoItem = template.content.cloneNode(true);
+        const todoItemName = todoItem.querySelector('.todo-item-name');
+        todoItemName.innerHTML = name;
+        todoItemName.style.fontWeight = urgent ? 'bold' : 'normal';
+        todoItem.querySelector('.todo-item-checkbox').checked = done;
+        return todoItem;
+      }
+
+      function createTodoList({ list }) {
+        const fragment = document.createDocumentFragment();
+
+        for (const item of list) {
+          fragment.appendChild(createTodoItem(item));
+          fragment.appendChild(document.createElement('br'));
+        }
+
+        return fragment;
+      }
+
+      function render(el, root) {
+        removeAll(root);
+        root.appendChild(el);
+      }
+
+      function removeAll(el) {
+        while (el.lastElementChild) {
+          el.removeChild(el.lastElementChild);
+        }
+      }
+
+      const container = document.querySelector('#container');
+      render(createTodoList({ list }), container);
+      render(
+        createTodoItem(list[1]),
+        document.querySelector('#second-container')
+      );
+
+      setTimeout(() => {
+        list[1].urgent = false;
+        render(createTodoList({ list }), container);
+      }, 4000);
+    </script>
+  </body>
+</html>
