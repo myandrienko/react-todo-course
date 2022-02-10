@@ -1,8 +1,19 @@
 import { hasTemporaryId } from "../models/todos";
 import { BASE_URL } from "./config";
+import { authStore } from '../stores/authStore';
 
 export async function getTasks() {
-  const response = await fetch(`${BASE_URL}/tasks`);
+  const authState = authStore.getState();
+
+  if (!authState.authorized) {
+    throw new Error('Unauthorized');
+  }
+
+  const response = await fetch(`${BASE_URL}/tasks`, {
+    headers: {
+      'Authentication': `Bearer ${authState.token}`
+    }
+  });
 
   if (response.status !== 200) {
     throw new Error(`Fetching tasks failed, status ${response.status}`);
