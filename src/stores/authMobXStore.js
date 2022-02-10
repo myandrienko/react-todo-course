@@ -1,39 +1,51 @@
 import * as api from "../api/authApi";
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable, runInAction, when } from "mobx";
 
 class AuthStore {
-  constructor(initialData) {
-    this.reset(initialData);
+  constructor(initialToken) {
+    this.token = initialToken;
 
     makeObservable(this, {
-      authorized: observable,
+      authorized: computed,
       token: observable,
-      name: observable,
-      reset: action
+      name: computed,
     });
   }
 
-  async authenticate(login) {
-    const jwt = await api.authenticate({ login });
-    const parts = jwt.split('.');
+  get authorized() {
+    return this.token !== null;
+  }
+
+  get claims() {
+    if (!this.authorized) {
+      return null;
+    }
+
+    const parts = this.token.split('.');
 
     if (parts.length !== 3) {
       throw new Error('Invalid JWT token');
     }
 
-    const claims = JSON.parse(atob(parts[1]));
-    this.reset({ authorized: true, name: claims.name, token: jwt });
+    return JSON.parse(atob(parts[1]));
   }
 
-  reset(data) {
-    Object.assign(this, data);
+  get name() {
+    return this.claims?.name ?? null;
+  }
+
+  async authenticate(login) {
+    const jwt = await api.authenticate({ login });
+    runInAction(() => {
+      this.token = jwt;
+    })
   }
 }
 
-export const authMobXStore = new AuthStore({
-  authorized: false,
-  name: null,
-  token: null
+export const authMobXStore = new AuthStore(null);
+
+when(() => authMobXStore.authorized, () => {
+  console.log(`You've been authorized as ${authMobXStore.name}`);
 });
 
 window.authMobXStore = authMobXStore;
