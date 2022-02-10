@@ -1,36 +1,28 @@
 import { useCallback, useEffect, useState } from "react";
 import * as api from "../api/taskApi";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export function useTodoList() {
-  const [list, setList] = useState(null);
-  const navigate = useNavigate();
+  const client = useQueryClient();
+  const { status, data, error } = useQuery('list', () => api.getTasks());
 
-  const loadTasks = useCallback(async () => {
-    const tasks = await api.getTasks();
-    setList(tasks);
-  }, []);
+  const addTaskMutation = useMutation((newTask) => api.addTask(newTask), {
+    onSuccess() {
+      client.invalidateQueries('list');
+    }
+  });
 
-  useEffect(() => {
-    loadTasks().catch((e) => {
-      if (e.message === 'Unauthorized') {
-        navigate('/login');
-      }
+  const updateTaskMutation = useMutation((task) => api.updateTask(task), {
+    onSuccess() {
+      client.invalidateQueries('list');
+    }
+  });
 
-      console.error('Failed to load tasks');
-    });
-  }, [loadTasks, navigate]);
-
-  async function addTask(newTask) {
-    setList([...list, newTask]);
-    await api.addTask(newTask);
-    await loadTasks();
-  }
-
-  const updateTask = useCallback(async (task) => {
-    setList(list => list.map(item => item.id === task.id ? task : item));
-    await api.updateTask(task);
-  }, []);
-
-  return { list, isLoading: list === null, addTask, updateTask };
+  return {
+    list: data,
+    isLoading: status === 'loading',
+    addTask: (newTask) => addTaskMutation.mutate(newTask),
+    updateTask: (task) => updateTaskMutation.mutate(task)
+  };
 }
