@@ -1,17 +1,15 @@
 import { hasTemporaryId } from "../models/todos";
 import { BASE_URL } from "./config";
-import { authStore } from '../stores/authStore';
+import { authMobXStore } from "../stores/authMobXStore";
 
 export async function getTasks() {
-  const authState = authStore.getState();
-
-  if (!authState.authorized) {
+  if (!authMobXStore.authorized) {
     throw new Error('Unauthorized');
   }
 
   const response = await fetch(`${BASE_URL}/tasks`, {
     headers: {
-      'Authentication': `Bearer ${authState.token}`
+      'Authentication': `Bearer ${authMobXStore.token}`
     }
   });
 

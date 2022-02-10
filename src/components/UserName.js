@@ -1,15 +1,13 @@
 import React from 'react';
-import { authStore } from "../stores/authStore";
-import { useStore } from "../hooks/useStore";
+import { authMobXStore } from "../stores/authMobXStore";
+import { observer } from 'mobx-react-lite';
 
-const nameSelector = (state) => state.name;
+export const UserName = observer(function UserName() {
+  console.log('UserName rendered');
 
-export function UserName() {
-  const name = useStore(authStore, nameSelector);
-
-  if (!name) {
+  if (!authMobXStore.authorized) {
     return null;
   }
 
-  return <em>Hello, {name}!</em>;
-}
+  return <em>Hello, {authMobXStore.name}!</em>;
+});
